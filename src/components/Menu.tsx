@@ -10,9 +10,12 @@ import {
   IonNote,
 } from '@ionic/react';
 
-import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { useHistory, useLocation } from 'react-router-dom';
+import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, logOut, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
+import { useDispatch } from 'react-redux';
+import { logout } from '../actions';
+import { Auth } from 'aws-amplify';
 
 interface AppPage {
   url: string;
@@ -60,13 +63,23 @@ const appPages: AppPage[] = [
   }
 ];
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
 const Menu: React.FC = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const signOut = async () => {
+    try {
+      await Auth.signOut();
+      dispatch(logout());
+      history.push('/Login', { direction: 'none' });
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  }
 
   return (
-    <IonMenu contentId="main" type="overlay">
+    <IonMenu contentId="main" type="overlay" disabled={location.pathname === '/Login'}>
       <IonContent>
         <IonList id="inbox-list">
           <IonListHeader>Inbox</IonListHeader>
@@ -84,13 +97,10 @@ const Menu: React.FC = () => {
         </IonList>
 
         <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
+          <IonItem lines="none" onClick={() => signOut()} routerLink="/">
+            <IonIcon slot="start" icon={logOut} />
+            <IonLabel>Sign Out</IonLabel>
+          </IonItem>
         </IonList>
       </IonContent>
     </IonMenu>
