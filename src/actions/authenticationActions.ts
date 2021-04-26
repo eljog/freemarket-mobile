@@ -1,7 +1,6 @@
 import { AuthState } from "../reducers/authenication"
 
 export const login = (payload: AuthState) => {
-    console.log("LOGIN", payload);
     return {
         type: 'LOGIN',
         payload: payload,
