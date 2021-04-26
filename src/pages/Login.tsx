@@ -1,4 +1,5 @@
-import { IonButton, IonButtons, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonRow, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { Plugins } from '@capacitor/core';
+import { IonButton, IonButtons, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonRow, IonSpinner, IonText, IonTitle, IonToolbar, useIonAlert } from '@ionic/react';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
@@ -10,7 +11,6 @@ import { AuthState } from '../reducers/authenication';
 import './Login.scss';
 
 const Login: React.FC = () => {
-
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -19,6 +19,7 @@ const Login: React.FC = () => {
     const [passwordError, setPasswordError] = useState(false);
     const [signingIn, setSigningIn] = useState<boolean>();
 
+    const [present] = useIonAlert();
     const history = useHistory();
     const dispatch = useDispatch();
     const authentication = useSelector<RootState, AuthState>((s) => s.authentication);
@@ -28,6 +29,8 @@ const Login: React.FC = () => {
             history.push('/', { direction: 'none' });
         }
     }, [authentication]);
+
+    const { Browser } = Plugins;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -64,9 +67,6 @@ const Login: React.FC = () => {
             authState.refreshToken = session.getRefreshToken().getToken();
 
             dispatch(login(authState));
-            console.log("AuthState", authState);
-
-            history.push('/page/Inbox', { direction: 'none' });
         } catch (error) {
             console.log(error);
             setErrorMessage(error.message);
@@ -126,7 +126,17 @@ const Login: React.FC = () => {
                             <IonButton type="submit" expand="block">{formSubmitted && signingIn ? <span><IonSpinner name="dots" /></span> : <span>Login</span>}</IonButton>
                         </IonCol>
                         <IonCol>
-                            <IonButton routerLink="/signup" color="light" expand="block">Signup</IonButton>
+                            <IonButton color="light" expand="block" onClick={() =>
+                                present({
+                                    header: 'Signup on the web app',
+                                    message: 'Please visit our website and click on the signup link to complete signup.',
+                                    buttons: [
+                                        'Cancel',
+                                        { text: 'Signup on the Web App', handler: (d) => Browser.open({ url: 'https://freemarket.azurewebsites.net/' }) },
+                                    ],
+                                    onDidDismiss: (e) => console.log('did dismiss'),
+                                })
+                            }>Signup</IonButton>
                         </IonCol>
                     </IonRow>
                     <IonRow>
