@@ -76,7 +76,7 @@ const About: React.FC = () => {
                     <IonListHeader>Stocks</IonListHeader>
                     {portfolio.stocks.map((stock) => {
                         return (
-                            <IonItem routerLink={`company/${stock.symbol}`} routerDirection="forward" key={stock.symbol}>
+                            <IonItem routerLink={`portfolio/${stock.symbol}`} routerDirection="forward" key={stock.symbol}>
                                 <IonAvatar slot="start">
                                     <img src={`https://storage.googleapis.com/iex/api/logos/${stock.symbol}.png`} style={{ maxWidth: 24, maxHeight: 24 }} />
                                 </IonAvatar>
