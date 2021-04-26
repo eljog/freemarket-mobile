@@ -105,7 +105,7 @@ const Login: React.FC = () => {
                         {formSubmitted && usernameError && <IonText color="danger">
                             <p className="ion-padding-start">
                                 Username is required
-              </p>
+                            </p>
                         </IonText>}
 
                         <IonItem>
@@ -117,7 +117,7 @@ const Login: React.FC = () => {
                         {formSubmitted && passwordError && <IonText color="danger">
                             <p className="ion-padding-start">
                                 Password is required
-              </p>
+                            </p>
                         </IonText>}
                     </IonList>
 
@@ -129,10 +129,10 @@ const Login: React.FC = () => {
                             <IonButton color="light" expand="block" onClick={() =>
                                 present({
                                     header: 'Signup on the web app',
-                                    message: 'Please visit our website and click on the signup link to complete signup.',
+                                    message: 'Please visit our website to complete signup.',
                                     buttons: [
                                         'Cancel',
-                                        { text: 'Signup on the Web App', handler: (d) => Browser.open({ url: 'https://freemarket.azurewebsites.net/' }) },
+                                        { text: 'Signup on the Web App', handler: (d) => Browser.open({ url: 'https://freemarket.azurewebsites.net/signup' }) },
                                     ],
                                     onDidDismiss: (e) => console.log('did dismiss'),
                                 })

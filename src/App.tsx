@@ -75,6 +75,9 @@ const App: React.FC = () => {
             <Route path="/portfolio" exact={true}>
               <Portfolio />
             </Route>
+            <Route path="/portfolio/:symbol" exact={true}>
+              <Company />
+            </Route>
             <Route path="/login" exact={true}>
               <Login />
             </Route>

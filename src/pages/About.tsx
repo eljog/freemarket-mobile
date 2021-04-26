@@ -45,7 +45,7 @@ const About: React.FC = () => {
                 <IonCard>
                     <img src="assets/experiment.jpg" alt="Freemarket logo" color="dark" />
                     <IonCardHeader>
-                        <IonCardSubtitle>Thank you for using</IonCardSubtitle>
+                        <IonCardSubtitle>Thank you {authentication.username} for using</IonCardSubtitle>
                         <IonCardTitle>FreeMarket</IonCardTitle>
                     </IonCardHeader>
 
